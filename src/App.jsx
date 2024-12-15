@@ -2,9 +2,11 @@ import { useState } from "react";
 import "./App.css";
 
 function App() {
-  const [todos, setTodos] = useState({
-    title: "",
-  });
+  const [todos, setTodos] = useState([
+    {
+      title: "",
+    },
+  ]);
   const [todo, setTodo] = useState("");
 
   function handleForm(e) {
@@ -13,6 +15,7 @@ function App() {
       title: todo,
       id: new Date().getDate() * 3,
     };
+
     addTodo(newTodo);
   }
 
@@ -20,8 +23,10 @@ function App() {
     setTodo(e.target.value);
   }
 
-  function addTodo(todo) {
-    setTodos((prevState) => [...prevState, todo]);
+  function addTodo(newTodo) {
+    const todoExists = todos.some((todo) => todo.title === newTodo.title);
+    if (todoExists) return;
+    setTodos((prevState) => [...prevState, newTodo]);
   }
 
   return (
@@ -34,7 +39,7 @@ function App() {
 
       <section>
         {todos.map((todo, i) => {
-          return <div key={i}>{todo}</div>;
+          return <div key={i}>{todo.title}</div>;
         })}
       </section>
     </>
